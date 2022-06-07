@@ -32,11 +32,13 @@ mainInfo.innerText = `This is going to be some practice javascript to get ready 
 
 
 // ADD IMAGES
+const imageList = []
 const addImages = document.createElement('div')
 addImages.className= makeClassName(menuItems[1])
-addImages.innerText = 'This is some temporary inner text'
+// we will have a button and a list of ever-growing list items
 
 
+//______________//
 
 // MENU ITEMS
 menuItems.forEach(item => {
@@ -48,18 +50,14 @@ menuItems.forEach(item => {
 	liItem.appendChild(a)
 	menu.appendChild(liItem)
 
-
-
 	a.addEventListener('click', () => {
-		mainBody.childNodes.forEach(child => {
-			if(child.className == className)
-				child.style.display = 'block'
-			else 
-				child.style.display = 'none'
+		menu.childNodes.forEach(child => {
+			child.className = child.innerText === item ? 'selected menu-item' : 'menu-item'
 		})
 
-		// console.log('ITEM', mainBodyItem.innerText)
-
+		mainBody.childNodes.forEach(child => {
+			child.style.display = child.className == className ? 'block' : 'none'
+		})
 	})
 })
 
@@ -67,5 +65,4 @@ addItemsTo(mainBody)(mainInfo, addImages)
 mainBody.childNodes.forEach(child => child.style.display = 'none')
 
 addItemsTo(root)(header, menu, mainBody)
-
 document.body.appendChild(root);
