@@ -37,19 +37,35 @@ addImages.className= makeClassName(menuItems[1])
 addImages.innerText = 'This is some temporary inner text'
 
 
-// MENU ITEMS
 
+// MENU ITEMS
 menuItems.forEach(item => {
+	const className = makeClassName(item)
 	const liItem = document.createElement('li')
-	liItem.className = makeClassName(item)
 	const a = document.createElement('a')
 	a.href = '#'
 	a.innerText = item
 	liItem.appendChild(a)
 	menu.appendChild(liItem)
+
+
+
+	a.addEventListener('click', () => {
+		mainBody.childNodes.forEach(child => {
+			if(child.className == className)
+				child.style.display = 'block'
+			else 
+				child.style.display = 'none'
+		})
+
+		// console.log('ITEM', mainBodyItem.innerText)
+
+	})
 })
 
 addItemsTo(mainBody)(mainInfo, addImages)
+mainBody.childNodes.forEach(child => child.style.display = 'none')
 
 addItemsTo(root)(header, menu, mainBody)
+
 document.body.appendChild(root);
