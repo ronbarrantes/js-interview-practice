@@ -32,11 +32,30 @@ mainInfo.innerText = `This is going to be some practice javascript to get ready 
 
 
 // ADD IMAGES
-const imageList = []
 const addImages = document.createElement('div')
 addImages.className= makeClassName(menuItems[1])
+const addImagesButton = document.createElement('button')
+const imageList = document.createElement('ul')
+addItemsTo(addImages)(addImagesButton, imageList)
 // we will have a button and a list of ever-growing list items
+addImagesButton.innerText = 'Get random image'
+let i = 0
+const getImage = async () => {
+	const data = await fetch('https://picsum.photos/100')
 
+	console.log(data)
+
+	const img = document.createElement('img')
+	img.src = data.url
+	img.alt = `From lorem picsum item ${++i}`
+	const imgItem = document.createElement('li')
+	imgItem.appendChild(img)
+
+	imageList.appendChild(imgItem)
+}
+
+
+addImagesButton.addEventListener('click', getImage)
 
 //______________//
 
