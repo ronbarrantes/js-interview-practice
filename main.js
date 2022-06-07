@@ -23,15 +23,15 @@ const mainBody = document.createElement('div')
 mainBody.className = 'main-body'
 
 // PAGES
-const menuItems = ['Main info', 'Add images' ]
+const menuItems = ['Main info', 'Add images', 'Tab component', 'Index card component' ]
 
-// MAIN INFO
+// PAGE: Main info
 const mainInfo = document.createElement('div')
 mainInfo.className= makeClassName(menuItems[0])
 mainInfo.innerText = `This is going to be some practice javascript to get ready for my little test thingy`
 
 
-// ADD IMAGES
+// PAGE: add images
 const addImages = document.createElement('div')
 addImages.className= makeClassName(menuItems[1])
 const addImagesButton = document.createElement('button')
@@ -58,8 +58,19 @@ const getImage = async () => {
 		})
 	})
 }
-
 addImagesButton.addEventListener('click', getImage)
+
+// PAGE: Tab component
+const tabComponent = document.createElement('div')
+tabComponent.className = makeClassName(menuItems[2])
+tabComponent.innerText = 'The tab component will feature menu items and will display one single item from the tab'
+
+
+// PAGE: Index card component
+const indexCardComponent = document.createElement('div')
+indexCardComponent.classList = makeClassName(menuItems[3])
+indexCardComponent.innerText = 'This will be similar to a index card, it will have some animation thingy (maybe)'
+
 /* --------------------------- */
 
 // MENU ITEMS
@@ -84,9 +95,9 @@ menuItems.forEach(item => {
 	})
 })
 
-addItemsTo(mainBody)(mainInfo, addImages)
+// ADDING ITEMS TO MAIN BODY
+addItemsTo(mainBody)(mainInfo, addImages, tabComponent, indexCardComponent)
 mainBody.childNodes.forEach(child => child.style.display = 'none')
-
 
 addItemsTo(root)(header, menu, mainBody)
 document.body.appendChild(root);
