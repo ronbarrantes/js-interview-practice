@@ -39,11 +39,7 @@ body{
 	background: #123;
 }
 
-.selected > a {
+.menu-item.selected > a {
 	color: #fff;
 	background: #456;
-}
-
-.main-body {
-
 }
