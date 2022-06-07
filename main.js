@@ -44,6 +44,7 @@ addImages.className= makeClassName(menuItems[1])
 menuItems.forEach(item => {
 	const className = makeClassName(item)
 	const liItem = document.createElement('li')
+	liItem.className = 'menu-item'
 	const a = document.createElement('a')
 	a.href = '#'
 	a.innerText = item
@@ -52,7 +53,7 @@ menuItems.forEach(item => {
 
 	a.addEventListener('click', () => {
 		menu.childNodes.forEach(child => {
-			child.className = child.innerText === item ? 'selected menu-item' : 'menu-item'
+			child.className = child.innerText === item ? 'menu-item selected' : 'menu-item'
 		})
 
 		mainBody.childNodes.forEach(child => {

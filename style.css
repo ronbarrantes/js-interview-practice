@@ -1,0 +1,49 @@
+
+*{
+	margin-bottom: 0;
+	padding-bottom: 0;
+	box-sizing: border-box;
+}
+
+body{
+	font-family: Helvetica,  Arial,  sans-serif;
+}
+
+.header {
+	margin-bottom: 1em;
+}
+
+.main-menu {
+	display: flex;
+	list-style: none;
+
+	padding: 0;
+}
+
+.menu-item {
+	margin-bottom: 3em;
+}
+
+.menu-item a {
+	border: 1px solid #123;
+	text-decoration: none;
+	color: #123;
+	border-radius: .2em;
+	margin: 0 .3em;
+	padding: .3em 1em;
+}
+
+.menu-item > a:hover, 
+.menu-item > a:active {
+	color: #fff;
+	background: #123;
+}
+
+.selected > a {
+	color: #fff;
+	background: #456;
+}
+
+.main-body {
+
+}
