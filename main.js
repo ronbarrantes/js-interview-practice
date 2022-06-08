@@ -1,8 +1,4 @@
-// Add an div element to the DOM
 const root = document.createElement('div');
-// create a menu for the pages that I'm going to be writing
-// swap items via the menu to a new practice item
-
 
 // HELPERS
 const makeClassName = (str) => str.toLowerCase().split(' ').join('-')
@@ -23,7 +19,7 @@ const mainBody = document.createElement('div')
 mainBody.className = 'main-body'
 
 // PAGES
-const menuItems = ['Main info', 'Add images', 'Tab component', 'Index card component' ]
+const menuItems = ['Main info', 'Add images', 'Tab component', 'Amazon button']
 
 // PAGE: Main info
 const mainInfo = document.createElement('div')
@@ -36,6 +32,7 @@ const addImages = document.createElement('div')
 addImages.className= makeClassName(menuItems[1])
 const addImagesButton = document.createElement('button')
 const imageList = document.createElement('ul')
+imageList.className = 'img-list-ul'
 addItemsTo(addImages)(addImagesButton, imageList)
 addImagesButton.innerText = 'Get random image'
 let i = 0
@@ -63,13 +60,77 @@ addImagesButton.addEventListener('click', getImage)
 // PAGE: Tab component
 const tabComponent = document.createElement('div')
 tabComponent.className = makeClassName(menuItems[2])
-tabComponent.innerText = 'The tab component will feature menu items and will display one single item from the tab'
+
+const tcData = [
+	{
+		title: 'Card 1',
+		question: 'What is the capital of the US?',
+		answer: 'Washington, DC',
+	},
+	{
+		title: 'Card 2',
+		question: 'What is the capital of CR?',
+		answer: 'San Jose',
+	},
+	{
+		title: 'Card 3',
+		question: 'lorem???',
+		answer: 'ipsum',
+	}
+]
+
+let tcDataIndex = 0;
+let isQuestionEnabled = true;
+
+const tabComponentList = document.createElement('ul')
+tabComponentList.className = 'tc-list'
+
+const tabComponentBody = document.createElement('div')
+tabComponentBody.className = 'tc-body'
 
 
-// PAGE: Index card component
-const indexCardComponent = document.createElement('div')
-indexCardComponent.classList = makeClassName(menuItems[3])
-indexCardComponent.innerText = 'This will be similar to a index card, it will have some animation thingy (maybe)'
+const extraStuff = document.createElement('p')
+
+
+tcData.forEach((compItem, idx) => {
+	const listItem = document.createElement('li')
+	listItem.innerText = compItem.title
+	tabComponentList.appendChild(listItem)
+
+	if(idx === 0){
+		listItem.classList.add('selected')
+	}
+
+	listItem.addEventListener('click', () => {
+		document.querySelectorAll('.tc-list > li').forEach(item => {
+			item.classList.remove('selected')
+		})
+
+		listItem.classList.add('selected')
+		tcDataIndex = idx
+
+		tabComponentBody.innerText = tcData[idx].question
+	})
+})
+
+tabComponentBody.addEventListener('click', () => {
+	isQuestionEnabled = !isQuestionEnabled
+	const isQuestion = isQuestionEnabled ? 'question': 'answer'
+	tabComponentBody.innerText = tcData[tcDataIndex][isQuestion]
+})
+
+tabComponentBody.innerText = tcData[tcDataIndex].question
+addItemsTo(tabComponent)(tabComponentList, tabComponentBody)
+
+/* ------------------------ */
+
+// PAGE: Amazon button question
+const amazonButtonQuesh = document.createElement('div')
+amazonButtonQuesh.classList = makeClassName(menuItems[3])
+
+
+// TODO: do something with forms
+// study forms
 
 /* --------------------------- */
 
@@ -96,7 +157,7 @@ menuItems.forEach(item => {
 })
 
 // ADDING ITEMS TO MAIN BODY
-addItemsTo(mainBody)(mainInfo, addImages, tabComponent, indexCardComponent)
+addItemsTo(mainBody)(mainInfo, addImages, tabComponent)
 mainBody.childNodes.forEach(child => child.style.display = 'none')
 
 addItemsTo(root)(header, menu, mainBody)

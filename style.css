@@ -16,7 +16,7 @@ body{
 .main-menu {
 	display: flex;
 	list-style: none;
-
+	flex-wrap: wrap;
 	padding: 0;
 }
 
@@ -43,3 +43,51 @@ body{
 	color: #fff;
 	background: #456;
 }
+
+.img-list-ul {
+	padding: 0;
+	list-style: none;
+}
+
+.tab-component {
+	max-width: 500px;
+	border: 1px solid #123;
+}
+
+.tc-list {
+	display: flex;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.tc-list > li {
+	margin: 0;
+	padding: .3em 1.2em;
+	border: 1px solid #123;
+	border-top: none;
+	border-left: none;
+}
+
+.tc-list li:hover {
+	background: #2aa;
+	cursor: pointer;
+}
+
+.tc-list li.selected {
+	background: #288;
+	border-bottom: 1px solid #288;
+	color: #fff;
+}
+
+.tc-body {
+	height: 200px;
+	background: #288;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #fff;
+	font-size:1.3rem;
+	cursor: help;
+}
+
