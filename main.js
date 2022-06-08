@@ -1,4 +1,4 @@
-const root = document.createElement('div');
+const root = document.createElement('div')
 
 // HELPERS
 const makeClassName = (str) => str.toLowerCase().split(' ').join('-')
@@ -25,7 +25,6 @@ const menuItems = ['Main info', 'Add images', 'Tab component', 'Amazon button']
 const mainInfo = document.createElement('div')
 mainInfo.className= makeClassName(menuItems[0])
 mainInfo.innerText = `This is going to be some practice javascript to get ready for my little test thingy`
-
 
 // PAGE: add images
 const addImages = document.createElement('div')
@@ -76,11 +75,11 @@ const tcData = [
 		title: 'Card 3',
 		question: 'lorem???',
 		answer: 'ipsum',
-	}
+	},
 ]
 
-let tcDataIndex = 0;
-let isQuestionEnabled = true;
+let tcDataIndex = 0
+let isQuestionEnabled = true
 
 const tabComponentList = document.createElement('ul')
 tabComponentList.className = 'tc-list'
@@ -88,9 +87,7 @@ tabComponentList.className = 'tc-list'
 const tabComponentBody = document.createElement('div')
 tabComponentBody.className = 'tc-body'
 
-
 const extraStuff = document.createElement('p')
-
 
 tcData.forEach((compItem, idx) => {
 	const listItem = document.createElement('li')
@@ -128,9 +125,24 @@ addItemsTo(tabComponent)(tabComponentList, tabComponentBody)
 const amazonButtonQuesh = document.createElement('div')
 amazonButtonQuesh.classList = makeClassName(menuItems[3])
 
+const amButtonArr = []
 
-// TODO: do something with forms
-// study forms
+const initAmazonTest = () => {
+	amButtonArr.push(0)
+	amButtonArr.forEach((item, idx) => {
+		const btn = document.createElement('button')
+		btn.innerText = `Count ${item}`
+		amazonButtonQuesh.appendChild(btn)
+
+		btn.addEventListener('click', () => {
+			amazonButtonQuesh.innerHTML = ''
+			amButtonArr[idx] = item + 1
+			initAmazonTest()
+		})
+	})
+}
+
+initAmazonTest()
 
 /* --------------------------- */
 
@@ -157,10 +169,10 @@ menuItems.forEach(item => {
 })
 
 // ADDING ITEMS TO MAIN BODY
-addItemsTo(mainBody)(mainInfo, addImages, tabComponent)
+addItemsTo(mainBody)(mainInfo, addImages, tabComponent, amazonButtonQuesh)
 mainBody.childNodes.forEach(child => child.style.display = 'none')
 
 addItemsTo(root)(header, menu, mainBody)
-document.body.appendChild(root);
+document.body.appendChild(root)
 
 document.querySelector('.menu-item > a').click()
