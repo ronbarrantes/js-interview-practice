@@ -91,3 +91,28 @@ body{
 	cursor: help;
 }
 
+.form-header {
+	display: flex;
+}
+
+.form-body-ul {
+	list-style: none;
+	width: 300px;
+}
+
+.form-row-li {
+	margin: .5em 0;
+	padding: .3em ; 
+	border-bottom: 1px solid #123;
+	align-items: right;
+}
+
+.form-remove-button {
+	margin-left: 1em;
+}
+/* 
+
+
+
+
+*/

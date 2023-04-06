@@ -19,7 +19,7 @@ const mainBody = document.createElement('div')
 mainBody.className = 'main-body'
 
 // PAGES
-const menuItems = ['Main info', 'Add images', 'Tab component', 'Amazon button']
+const menuItems = ['Main info', 'Add images', 'Tab component', 'Amazon button', 'Form practice']
 
 // PAGE: Main info
 const mainInfo = document.createElement('div')
@@ -37,7 +37,6 @@ addImagesButton.innerText = 'Get random image'
 let i = 0
 const getImage = async () => {
 	const data = await fetch('https://picsum.photos/100')
-	console.log(data)
 	const img = document.createElement('img')
 	img.src = data.url
 	img.alt = `From lorem picsum item ${++i}`
@@ -144,6 +143,56 @@ const initAmazonTest = () => {
 
 initAmazonTest()
 
+// PAGE: Form stuff
+
+const formPractice = document.createElement('div')
+formPractice.className = makeClassName(menuItems[4])
+
+let todos = []
+const addButton = document.createElement('button')
+const formInput = document.createElement('input')
+formInput.type = 'text'
+formInput.placeholder = 'Add to todo'
+formInput.width = 200
+const formBody = document.createElement('ul')
+formBody.className = 'form-body-ul'
+const formHeader = document.createElement('div')
+formHeader.className = 'form-header'
+addButton.textContent = 'Add'
+
+addItemsTo(formHeader)(formInput, addButton)
+addItemsTo(formPractice)(formHeader, formBody)
+
+const buildTodos = () => {
+	formBody.innerHTML = ''
+	todos.forEach((item, idx) => {
+		const pTextItem = document.createElement('span')
+		pTextItem.textContent = `${item}`
+		const removeButton = document.createElement('button')
+		removeButton.textContent = 'x'
+		removeButton.className = 'form-remove-button'
+		const row = document.createElement('li')
+		row.className = 'form-row-li'
+
+		removeButton.addEventListener('click', () => {
+				todos = todos.filter((item, i) => {
+					return i !== idx && item
+				})
+				buildTodos()
+		})
+
+		addItemsTo(row)(pTextItem, removeButton)
+		formBody.appendChild(row)
+	})
+}
+
+addButton.addEventListener('click', () => {
+	if(formInput.value.length)
+		todos.push(formInput.value)
+
+	formInput.value = ''
+	buildTodos()
+})
 /* --------------------------- */
 
 // MENU ITEMS
@@ -169,7 +218,7 @@ menuItems.forEach(item => {
 })
 
 // ADDING ITEMS TO MAIN BODY
-addItemsTo(mainBody)(mainInfo, addImages, tabComponent, amazonButtonQuesh)
+addItemsTo(mainBody)(mainInfo, addImages, tabComponent, amazonButtonQuesh, formPractice)
 mainBody.childNodes.forEach(child => child.style.display = 'none')
 
 addItemsTo(root)(header, menu, mainBody)
