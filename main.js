@@ -1,227 +1,251 @@
-const root = document.createElement('div')
+const root = document.createElement("div");
 
 // HELPERS
-const makeClassName = (str) => str.toLowerCase().split(' ').join('-')
+const makeClassName = (str) => str.toLowerCase().split(" ").join("-");
 
-const addItemsTo = (mainRoot) => (...items) => {
-	items.forEach(item => {
-		mainRoot.appendChild(item)
-	})
-}
+const addItemsTo =
+  (mainRoot) =>
+  (...items) => {
+    items.forEach((item) => {
+      mainRoot.appendChild(item);
+    });
+  };
 
 // MAIN SETUP
-const header = document.createElement('h1')
-header.className = 'header'
-header.innerText = 'JavaScript practice'
-const menu = document.createElement('ul')
-menu.className = 'main-menu'
-const mainBody = document.createElement('div')
-mainBody.className = 'main-body'
+const header = document.createElement("h1");
+header.className = "header";
+header.innerText = "JavaScript practice";
+const menu = document.createElement("ul");
+menu.className = "main-menu";
+const mainBody = document.createElement("div");
+mainBody.className = "main-body";
 
 // PAGES
-const menuItems = ['Main info', 'Add images', 'Tab component', 'Amazon button', 'Form practice']
+const menuItems = [
+  "Main info",
+  "Add images",
+  "Tab component",
+  "Amazon button",
+  "Form practice",
+  "Fake AI Prompt",
+];
 
 // PAGE: Main info
-const mainInfo = document.createElement('div')
-mainInfo.className= makeClassName(menuItems[0])
-mainInfo.innerText = `This is going to be some practice javascript to get ready for my little test thingy`
+const mainInfo = document.createElement("div");
+mainInfo.className = makeClassName(menuItems[0]);
+mainInfo.innerText = `This is going to be some practice javascript to get ready for my little test thingy`;
 
 // PAGE: add images
-const addImages = document.createElement('div')
-addImages.className= makeClassName(menuItems[1])
-const addImagesButton = document.createElement('button')
-const imageList = document.createElement('ul')
-imageList.className = 'img-list-ul'
-addItemsTo(addImages)(addImagesButton, imageList)
-addImagesButton.innerText = 'Get random image'
-let i = 0
+const addImages = document.createElement("div");
+addImages.className = makeClassName(menuItems[1]);
+const addImagesButton = document.createElement("button");
+const imageList = document.createElement("ul");
+imageList.className = "img-list-ul";
+addItemsTo(addImages)(addImagesButton, imageList);
+addImagesButton.innerText = "Get random image";
+let i = 0;
 const getImage = async () => {
-	const data = await fetch('https://picsum.photos/100')
-	const img = document.createElement('img')
-	img.src = data.url
-	img.alt = `From lorem picsum item ${++i}`
-	const imgItem = document.createElement('li')
-	imgItem.appendChild(img)
-	imageList.appendChild(imgItem)
+  const data = await fetch("https://picsum.photos/100");
+  const img = document.createElement("img");
+  img.src = data.url;
+  img.alt = `From lorem picsum item ${++i}`;
+  const imgItem = document.createElement("li");
+  imgItem.appendChild(img);
+  imageList.appendChild(imgItem);
 
-	imgItem.addEventListener('dblclick', (e) => {
-		imageList.childNodes.forEach(listItem => {
-			const currImg = listItem.childNodes[0].src
-			if(currImg === e.target.src){
-				listItem.remove()
-			}
-		})
-	})
-}
-addImagesButton.addEventListener('click', getImage)
+  imgItem.addEventListener("dblclick", (e) => {
+    imageList.childNodes.forEach((listItem) => {
+      const currImg = listItem.childNodes[0].src;
+      if (currImg === e.target.src) {
+        listItem.remove();
+      }
+    });
+  });
+};
+addImagesButton.addEventListener("click", getImage);
 
 // PAGE: Tab component
-const tabComponent = document.createElement('div')
-tabComponent.className = makeClassName(menuItems[2])
+const tabComponent = document.createElement("div");
+tabComponent.className = makeClassName(menuItems[2]);
 
 const tcData = [
-	{
-		title: 'Card 1',
-		question: 'What is the capital of the US?',
-		answer: 'Washington, DC',
-	},
-	{
-		title: 'Card 2',
-		question: 'What is the capital of CR?',
-		answer: 'San Jose',
-	},
-	{
-		title: 'Card 3',
-		question: 'lorem???',
-		answer: 'ipsum',
-	},
-]
+  {
+    title: "Card 1",
+    question: "What is the capital of the US?",
+    answer: "Washington, DC",
+  },
+  {
+    title: "Card 2",
+    question: "What is the capital of CR?",
+    answer: "San Jose",
+  },
+  {
+    title: "Card 3",
+    question: "lorem???",
+    answer: "ipsum",
+  },
+];
 
-let tcDataIndex = 0
-let isQuestionEnabled = true
+let tcDataIndex = 0;
+let isQuestionEnabled = true;
 
-const tabComponentList = document.createElement('ul')
-tabComponentList.className = 'tc-list'
+const tabComponentList = document.createElement("ul");
+tabComponentList.className = "tc-list";
 
-const tabComponentBody = document.createElement('div')
-tabComponentBody.className = 'tc-body'
+const tabComponentBody = document.createElement("div");
+tabComponentBody.className = "tc-body";
 
-const extraStuff = document.createElement('p')
+const extraStuff = document.createElement("p");
 
 tcData.forEach((compItem, idx) => {
-	const listItem = document.createElement('li')
-	listItem.innerText = compItem.title
-	tabComponentList.appendChild(listItem)
+  const listItem = document.createElement("li");
+  listItem.innerText = compItem.title;
+  tabComponentList.appendChild(listItem);
 
-	if(idx === 0){
-		listItem.classList.add('selected')
-	}
+  if (idx === 0) {
+    listItem.classList.add("selected");
+  }
 
-	listItem.addEventListener('click', () => {
-		document.querySelectorAll('.tc-list > li').forEach(item => {
-			item.classList.remove('selected')
-		})
+  listItem.addEventListener("click", () => {
+    document.querySelectorAll(".tc-list > li").forEach((item) => {
+      item.classList.remove("selected");
+    });
 
-		listItem.classList.add('selected')
-		tcDataIndex = idx
+    listItem.classList.add("selected");
+    tcDataIndex = idx;
 
-		tabComponentBody.innerText = tcData[idx].question
-	})
-})
+    tabComponentBody.innerText = tcData[idx].question;
+  });
+});
 
-tabComponentBody.addEventListener('click', () => {
-	isQuestionEnabled = !isQuestionEnabled
-	const isQuestion = isQuestionEnabled ? 'question': 'answer'
-	tabComponentBody.innerText = tcData[tcDataIndex][isQuestion]
-})
+tabComponentBody.addEventListener("click", () => {
+  isQuestionEnabled = !isQuestionEnabled;
+  const isQuestion = isQuestionEnabled ? "question" : "answer";
+  tabComponentBody.innerText = tcData[tcDataIndex][isQuestion];
+});
 
-tabComponentBody.innerText = tcData[tcDataIndex].question
-addItemsTo(tabComponent)(tabComponentList, tabComponentBody)
+tabComponentBody.innerText = tcData[tcDataIndex].question;
+addItemsTo(tabComponent)(tabComponentList, tabComponentBody);
 
 /* ------------------------ */
 
 // PAGE: Amazon button question
-const amazonButtonQuesh = document.createElement('div')
-amazonButtonQuesh.classList = makeClassName(menuItems[3])
+const amazonButtonQuesh = document.createElement("div");
+amazonButtonQuesh.classList = makeClassName(menuItems[3]);
 
-const amButtonArr = []
+const amButtonArr = [];
 
 const initAmazonTest = () => {
-	amButtonArr.push(0)
-	amButtonArr.forEach((item, idx) => {
-		const btn = document.createElement('button')
-		btn.innerText = `Count ${item}`
-		amazonButtonQuesh.appendChild(btn)
+  amButtonArr.push(0);
+  amButtonArr.forEach((item, idx) => {
+    const btn = document.createElement("button");
+    btn.innerText = `Count ${item}`;
+    amazonButtonQuesh.appendChild(btn);
 
-		btn.addEventListener('click', () => {
-			amazonButtonQuesh.innerHTML = ''
-			amButtonArr[idx] = item + 1
-			initAmazonTest()
-		})
-	})
-}
+    btn.addEventListener("click", () => {
+      amazonButtonQuesh.innerHTML = "";
+      amButtonArr[idx] = item + 1;
+      initAmazonTest();
+    });
+  });
+};
 
-initAmazonTest()
+initAmazonTest();
 
 // PAGE: Form stuff
 
-const formPractice = document.createElement('div')
-formPractice.className = makeClassName(menuItems[4])
+const formPractice = document.createElement("div");
+formPractice.className = makeClassName(menuItems[4]);
 
-let todos = []
-const addButton = document.createElement('button')
-const formInput = document.createElement('input')
-formInput.type = 'text'
-formInput.placeholder = 'Add to todo'
-formInput.width = 200
-const formBody = document.createElement('ul')
-formBody.className = 'form-body-ul'
-const formHeader = document.createElement('div')
-formHeader.className = 'form-header'
-addButton.textContent = 'Add'
+let todos = [];
+const addButton = document.createElement("button");
+const formInput = document.createElement("input");
+formInput.type = "text";
+formInput.placeholder = "Add to todo";
+formInput.width = 200;
+const formBody = document.createElement("ul");
+formBody.className = "form-body-ul";
+const formHeader = document.createElement("div");
+formHeader.className = "form-header";
+addButton.textContent = "Add";
 
-addItemsTo(formHeader)(formInput, addButton)
-addItemsTo(formPractice)(formHeader, formBody)
+addItemsTo(formHeader)(formInput, addButton);
+addItemsTo(formPractice)(formHeader, formBody);
 
 const buildTodos = () => {
-	formBody.innerHTML = ''
-	todos.forEach((item, idx) => {
-		const pTextItem = document.createElement('span')
-		pTextItem.textContent = `${item}`
-		const removeButton = document.createElement('button')
-		removeButton.textContent = 'x'
-		removeButton.className = 'form-remove-button'
-		const row = document.createElement('li')
-		row.className = 'form-row-li'
+  formBody.innerHTML = "";
+  todos.forEach((item, idx) => {
+    const pTextItem = document.createElement("span");
+    pTextItem.textContent = `${item}`;
+    const removeButton = document.createElement("button");
+    removeButton.textContent = "x";
+    removeButton.className = "form-remove-button";
+    const row = document.createElement("li");
+    row.className = "form-row-li";
 
-		removeButton.addEventListener('click', () => {
-				todos = todos.filter((item, i) => {
-					return i !== idx && item
-				})
-				buildTodos()
-		})
+    removeButton.addEventListener("click", () => {
+      todos = todos.filter((item, i) => {
+        return i !== idx && item;
+      });
+      buildTodos();
+    });
 
-		addItemsTo(row)(pTextItem, removeButton)
-		formBody.appendChild(row)
-	})
-}
+    addItemsTo(row)(pTextItem, removeButton);
+    formBody.appendChild(row);
+  });
+};
 
-addButton.addEventListener('click', () => {
-	if(formInput.value.length)
-		todos.push(formInput.value)
+addButton.addEventListener("click", () => {
+  if (formInput.value.length) todos.push(formInput.value);
 
-	formInput.value = ''
-	buildTodos()
-})
+  formInput.value = "";
+  buildTodos();
+});
+
+// PAGE: Fake AI Prompt
+
+const fakeAIPromp = document.createElement("div");
+fakeAIPromp.className = makeClassName(menuItems[5]);
+fakeAIPromp.innerText = "Im a fake ai prompt";
+
 /* --------------------------- */
 
 // MENU ITEMS
-menuItems.forEach(item => {
-	const className = makeClassName(item)
-	const liItem = document.createElement('li')
-	liItem.className = 'menu-item'
-	const a = document.createElement('a')
-	a.href = '#'
-	a.innerText = item
-	liItem.appendChild(a)
-	menu.appendChild(liItem)
+menuItems.forEach((item) => {
+  const className = makeClassName(item);
+  const liItem = document.createElement("li");
+  liItem.className = "menu-item";
+  const a = document.createElement("a");
+  a.href = "#";
+  a.innerText = item;
+  liItem.appendChild(a);
+  menu.appendChild(liItem);
 
-	a.addEventListener('click', () => {
-		menu.childNodes.forEach(child => {
-			child.className = child.innerText === item ? 'menu-item selected' : 'menu-item'
-		})
+  a.addEventListener("click", () => {
+    menu.childNodes.forEach((child) => {
+      child.className =
+        child.innerText === item ? "menu-item selected" : "menu-item";
+    });
 
-		mainBody.childNodes.forEach(child => {
-			child.style.display = child.className == className ? 'block' : 'none'
-		})
-	})
-})
+    mainBody.childNodes.forEach((child) => {
+      child.style.display = child.className == className ? "block" : "none";
+    });
+  });
+});
 
 // ADDING ITEMS TO MAIN BODY
-addItemsTo(mainBody)(mainInfo, addImages, tabComponent, amazonButtonQuesh, formPractice)
-mainBody.childNodes.forEach(child => child.style.display = 'none')
+addItemsTo(mainBody)(
+  mainInfo,
+  addImages,
+  tabComponent,
+  amazonButtonQuesh,
+  formPractice,
+  fakeAIPromp,
+);
+mainBody.childNodes.forEach((child) => (child.style.display = "none"));
 
-addItemsTo(root)(header, menu, mainBody)
-document.body.appendChild(root)
+addItemsTo(root)(header, menu, mainBody);
+document.body.appendChild(root);
 
-document.querySelector('.menu-item > a').click()
+document.querySelector(".menu-item > a").click();
+
