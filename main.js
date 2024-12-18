@@ -1,66 +1,96 @@
-const root = document.createElement("div");
-
-// HELPERS
-const makeClassName = (str) => str.toLowerCase().split(" ").join("-");
-
 const addItemsTo =
   (mainRoot) =>
   (...items) => {
+    if (!items) return;
     items.forEach((item) => {
       mainRoot.appendChild(item);
     });
   };
-
-// TODO: make this class
 
 class Page {
   static pages = [];
 
   constructor(name) {
     this.name = name;
-    el = this.createElement(name);
+    this.element = this._createElement();
+    this.classname = this._makeClassName();
     Page.pages.push(this);
+    return this.element;
   }
 
-  createElement(name) {
-    const component = document.createElement("div");
-    component.classname = this.makeClassName(name);
-    return [component, name];
+  _createElement() {
+    const comp = document.createElement("div");
+    comp.classname = this._makeClassName(this.name);
+    return comp;
   }
 
-  makeClassName(str) {
-    return str.toLowerCase().split(" ").join("-");
+  _makeClassName() {
+    return this.name.toLowerCase().split(" ").join("-");
   }
-
-  static render() {}
 
   static get children() {
     return Page.pages;
   }
+
+  static _createHeader() {}
+
+  static _createNav() {}
+
+  static _createMainBody() {}
+
+  static render() {
+    const root = document.createElement("div");
+    // MAIN SETUP
+    const header = document.createElement("h1");
+    header.className = "header";
+    header.innerText = "JavaScript practice";
+    const menu = document.createElement("ul");
+    menu.className = "main-menu";
+    const mainBody = document.createElement("div");
+    mainBody.className = "main-body";
+
+    // MENU ITEMS
+    Page.pages.forEach((item) => {
+      console.log("Item", item);
+      const liItem = document.createElement("li");
+      liItem.className = "menu-item";
+      const a = document.createElement("a");
+      a.href = "#";
+      a.innerText = item.name;
+      liItem.appendChild(a);
+      menu.appendChild(liItem);
+
+      a.addEventListener("click", () => {
+        menu.childNodes.forEach((child) => {
+          console.log("menu", menu);
+          child.className =
+            child.innerText === item.name ? "menu-item selected" : "menu-item";
+        });
+
+        mainBody.childNodes.forEach((child) => {
+          child.style.display =
+            child.className == item.classname ? "block" : "none";
+        });
+      });
+    });
+
+    addItemsTo(mainBody)(...Page.pages.map((item) => item.element));
+    mainBody.childNodes.forEach((child) => (child.style.display = "none"));
+
+    // LAST SETUP
+    addItemsTo(root)(header, menu, mainBody);
+    document.body.appendChild(root);
+    document.querySelector(".menu-item > a").click();
+  }
 }
 
-// MAIN SETUP
-const header = document.createElement("h1");
-header.className = "header";
-header.innerText = "JavaScript practice";
-const menu = document.createElement("ul");
-menu.className = "main-menu";
-const mainBody = document.createElement("div");
-mainBody.className = "main-body";
+// HELPERS
+// const makeClassName = (str) => str.toLowerCase().split(" ").join("-");
 
 /**
  * Build the main component
  * @param {string} name - The name of the component
  */
-
-const makePageComponent = (name) => {
-  // if (!name) {
-  //   return new Error("Must select a name");
-  // }
-  const component = document.createElement("div");
-  component.classname = makeClassName(name);
-  return [component, name];
-};
 
 // PAGES
 // const menuItems = [
@@ -73,15 +103,16 @@ const makePageComponent = (name) => {
 // ];
 
 // PAGE: Main info
-const mainInfo = makePageComponent("Main Info");
-mainInfo[0].innerText = `This is going to be some practice javascript to get ready for my little test thingy`;
+const mainInfo = new Page("Main Info");
+mainInfo.innerText = `This is going to be some practice javascript to get ready for my little test thingy`;
 
 // PAGE: add images
-const addImages = makePageComponent("Add the Images");
+const addImages = new Page("Add the Images");
 const addImagesButton = document.createElement("button");
 const imageList = document.createElement("ul");
 imageList.className = "img-list-ul";
-addItemsTo(addImages[0])(addImagesButton, imageList);
+
+addItemsTo(addImages)(addImagesButton, imageList);
 addImagesButton.innerText = "Get random image";
 let i = 0;
 const getImage = async () => {
@@ -104,183 +135,145 @@ const getImage = async () => {
 };
 addImagesButton.addEventListener("click", getImage);
 
-// PAGE: Tab component
-const tabComponent = makePageComponent("Tab Component");
+// // PAGE: Tab component
+// const tabComponent = new Page("Tab Component");
 
-const tcData = [
-  {
-    title: "Card 1",
-    question: "What is the capital of the US?",
-    answer: "Washington, DC",
-  },
-  {
-    title: "Card 2",
-    question: "What is the capital of CR?",
-    answer: "San Jose",
-  },
-  {
-    title: "Card 3",
-    question: "lorem???",
-    answer: "ipsum",
-  },
-];
+// const tcData = [
+//   {
+//     title: "Card 1",
+//     question: "What is the capital of the US?",
+//     answer: "Washington, DC",
+//   },
+//   {
+//     title: "Card 2",
+//     question: "What is the capital of CR?",
+//     answer: "San Jose",
+//   },
+//   {
+//     title: "Card 3",
+//     question: "lorem???",
+//     answer: "ipsum",
+//   },
+// ];
 
-let tcDataIndex = 0;
-let isQuestionEnabled = true;
+// let tcDataIndex = 0;
+// let isQuestionEnabled = true;
 
-const tabComponentList = document.createElement("ul");
-tabComponentList.className = "tc-list";
+// const tabComponentList = document.createElement("ul");
+// tabComponentList.className = "tc-list";
 
-const tabComponentBody = document.createElement("div");
-tabComponentBody.className = "tc-body";
+// const tabComponentBody = document.createElement("div");
+// tabComponentBody.className = "tc-body";
 
-const extraStuff = document.createElement("p");
+// const extraStuff = document.createElement("p");
 
-tcData.forEach((compItem, idx) => {
-  const listItem = document.createElement("li");
-  listItem.innerText = compItem.title;
-  tabComponentList.appendChild(listItem);
+// tcData.forEach((compItem, idx) => {
+//   const listItem = document.createElement("li");
+//   listItem.innerText = compItem.title;
+//   tabComponentList.appendChild(listItem);
 
-  if (idx === 0) {
-    listItem.classList.add("selected");
-  }
+//   if (idx === 0) {
+//     listItem.classList.add("selected");
+//   }
 
-  listItem.addEventListener("click", () => {
-    document.querySelectorAll(".tc-list > li").forEach((item) => {
-      item.classList.remove("selected");
-    });
+//   listItem.addEventListener("click", () => {
+//     document.querySelectorAll(".tc-list > li").forEach((item) => {
+//       item.classList.remove("selected");
+//     });
 
-    listItem.classList.add("selected");
-    tcDataIndex = idx;
+//     listItem.classList.add("selected");
+//     tcDataIndex = idx;
 
-    tabComponentBody.innerText = tcData[idx].question;
-  });
-});
+//     tabComponentBody.innerText = tcData[idx].question;
+//   });
+// });
 
-tabComponentBody.addEventListener("click", () => {
-  isQuestionEnabled = !isQuestionEnabled;
-  const isQuestion = isQuestionEnabled ? "question" : "answer";
-  tabComponentBody.innerText = tcData[tcDataIndex][isQuestion];
-});
+// tabComponentBody.addEventListener("click", () => {
+//   isQuestionEnabled = !isQuestionEnabled;
+//   const isQuestion = isQuestionEnabled ? "question" : "answer";
+//   tabComponentBody.innerText = tcData[tcDataIndex][isQuestion];
+// });
 
-tabComponentBody.innerText = tcData[tcDataIndex].question;
-addItemsTo(tabComponent[0])(tabComponentList, tabComponentBody);
+// tabComponentBody.innerText = tcData[tcDataIndex].question;
+// addItemsTo(tabComponent[0])(tabComponentList, tabComponentBody);
 
-/* ------------------------ */
+// /* ------------------------ */
 
-// PAGE: Amazon button question
-const amazonButtonQuesh = makePageComponent("Amazon button");
+// // PAGE: Amazon button question
+// const amazonButtonQuesh = new Page("Amazon button");
 
-const amButtonArr = [];
+// const amButtonArr = [];
 
-const initAmazonTest = () => {
-  amButtonArr.push(0);
-  amButtonArr.forEach((item, idx) => {
-    const btn = document.createElement("button");
-    btn.innerText = `Count ${item}`;
-    amazonButtonQuesh[0].appendChild(btn);
+// const initAmazonTest = () => {
+//   amButtonArr.push(0);
+//   amButtonArr.forEach((item, idx) => {
+//     const btn = document.createElement("button");
+//     btn.innerText = `Count ${item}`;
+//     amazonButtonQuesh[0].appendChild(btn);
 
-    btn.addEventListener("click", () => {
-      amazonButtonQuesh.innerHTML = "";
-      amButtonArr[idx] = item + 1;
-      initAmazonTest();
-    });
-  });
-};
+//     btn.addEventListener("click", () => {
+//       amazonButtonQuesh.innerHTML = "";
+//       amButtonArr[idx] = item + 1;
+//       initAmazonTest();
+//     });
+//   });
+// };
 
-initAmazonTest();
+// initAmazonTest();
 
-// PAGE: Form stuff
+// // PAGE: Form stuff
 
-const formPractice = makePageComponent("Form Practice");
+// const formPractice = new Page("Form Practice");
 
-let todos = [];
-const addButton = document.createElement("button");
-const formInput = document.createElement("input");
-formInput.type = "text";
-formInput.placeholder = "Add to todo";
-formInput.width = 200;
-const formBody = document.createElement("ul");
-formBody.className = "form-body-ul";
-const formHeader = document.createElement("div");
-formHeader.className = "form-header";
-addButton.textContent = "Add";
+// let todos = [];
+// const addButton = document.createElement("button");
+// const formInput = document.createElement("input");
+// formInput.type = "text";
+// formInput.placeholder = "Add to todo";
+// formInput.width = 200;
+// const formBody = document.createElement("ul");
+// formBody.className = "form-body-ul";
+// const formHeader = document.createElement("div");
+// formHeader.className = "form-header";
+// addButton.textContent = "Add";
 
-addItemsTo(formHeader)(formInput, addButton);
-addItemsTo(formPractice[0])(formHeader, formBody);
+// addItemsTo(formHeader)(formInput, addButton);
+// addItemsTo(formPractice[0])(formHeader, formBody);
 
-const buildTodos = () => {
-  formBody.innerHTML = "";
-  todos.forEach((item, idx) => {
-    const pTextItem = document.createElement("span");
-    pTextItem.textContent = `${item}`;
-    const removeButton = document.createElement("button");
-    removeButton.textContent = "x";
-    removeButton.className = "form-remove-button";
-    const row = document.createElement("li");
-    row.className = "form-row-li";
+// const buildTodos = () => {
+//   formBody.innerHTML = "";
+//   todos.forEach((item, idx) => {
+//     const pTextItem = document.createElement("span");
+//     pTextItem.textContent = `${item}`;
+//     const removeButton = document.createElement("button");
+//     removeButton.textContent = "x";
+//     removeButton.className = "form-remove-button";
+//     const row = document.createElement("li");
+//     row.className = "form-row-li";
 
-    removeButton.addEventListener("click", () => {
-      todos = todos.filter((item, i) => {
-        return i !== idx && item;
-      });
-      buildTodos();
-    });
+//     removeButton.addEventListener("click", () => {
+//       todos = todos.filter((item, i) => {
+//         return i !== idx && item;
+//       });
+//       buildTodos();
+//     });
 
-    addItemsTo(row)(pTextItem, removeButton);
-    formBody.appendChild(row);
-  });
-};
+//     addItemsTo(row)(pTextItem, removeButton);
+//     formBody.appendChild(row);
+//   });
+// };
 
-addButton.addEventListener("click", () => {
-  if (formInput.value.length) todos.push(formInput.value);
+// addButton.addEventListener("click", () => {
+//   if (formInput.value.length) todos.push(formInput.value);
 
-  formInput.value = "";
-  buildTodos();
-});
+//   formInput.value = "";
+//   buildTodos();
+// });
 
-// PAGE: Fake AI Prompt
-const fakeAIPromp = makePageComponent("Fake AI Prompt");
-fakeAIPromp[0].innerText = "Im a fake ai prompt";
+// // PAGE: Fake AI Prompt
+// const fakeAIPromp = new Page("Fake AI Prompt");
+// fakeAIPromp[0].innerText = "Im a fake ai prompt";
 
-/* --------------------------- */
+// /* --------------------------- */
 
-const pages = [
-  mainInfo,
-  addImages,
-  tabComponent,
-  amazonButtonQuesh,
-  formPractice,
-  fakeAIPromp,
-];
-
-// MENU ITEMS
-pages.forEach((item) => {
-  const itemName = item[1];
-  const className = makeClassName(itemName);
-  const liItem = document.createElement("li");
-  liItem.className = "menu-item";
-  const a = document.createElement("a");
-  a.href = "#";
-  a.innerText = itemName;
-  liItem.appendChild(a);
-  menu.appendChild(liItem);
-
-  a.addEventListener("click", () => {
-    menu.childNodes.forEach((child) => {
-      child.className =
-        child.innerText === itemName ? "menu-item selected" : "menu-item";
-    });
-
-    mainBody.childNodes.forEach((child) => {
-      child.style.display = child.className == className ? "block" : "none";
-    });
-  });
-});
-
-addItemsTo(mainBody)(...pages.map((page) => page[0]));
-mainBody.childNodes.forEach((child) => (child.style.display = "none"));
-
-addItemsTo(root)(header, menu, mainBody);
-document.body.appendChild(root);
-document.querySelector(".menu-item > a").click();
+Page.render();
