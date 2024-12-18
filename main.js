@@ -13,14 +13,14 @@ class Page {
   constructor(name) {
     this.name = name;
     this.element = this._createElement();
-    this.classname = this._makeClassName();
+    this.className = this._makeClassName();
     Page.pages.push(this);
     return this.element;
   }
 
   _createElement() {
     const comp = document.createElement("div");
-    comp.classname = this._makeClassName(this.name);
+    comp.className = this._makeClassName(this.name);
     return comp;
   }
 
@@ -68,8 +68,9 @@ class Page {
         });
 
         mainBody.childNodes.forEach((child) => {
+          console.log("mb child", child.style.display, child.className);
           child.style.display =
-            child.className == item.classname ? "block" : "none";
+            child.className == item.className ? "block" : "none";
         });
       });
     });
