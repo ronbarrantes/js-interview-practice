@@ -51,24 +51,21 @@ class Page {
 
     // MENU ITEMS
     Page.pages.forEach((item) => {
-      console.log("Item", item);
       const liItem = document.createElement("li");
       liItem.className = "menu-item";
-      const a = document.createElement("a");
-      a.href = "#";
-      a.innerText = item.name;
-      liItem.appendChild(a);
+      const aEl = document.createElement("a");
+      aEl.href = "#";
+      aEl.innerText = item.name;
+      liItem.appendChild(aEl);
       menu.appendChild(liItem);
 
-      a.addEventListener("click", () => {
+      aEl.addEventListener("click", () => {
         menu.childNodes.forEach((child) => {
-          console.log("menu", menu);
           child.className =
             child.innerText === item.name ? "menu-item selected" : "menu-item";
         });
 
         mainBody.childNodes.forEach((child) => {
-          console.log("mb child", child.style.display, child.className);
           child.style.display =
             child.className == item.className ? "block" : "none";
         });
@@ -78,35 +75,18 @@ class Page {
     addItemsTo(mainBody)(...Page.pages.map((item) => item.element));
     mainBody.childNodes.forEach((child) => (child.style.display = "none"));
 
-    // LAST SETUP
     addItemsTo(root)(header, menu, mainBody);
     document.body.appendChild(root);
     document.querySelector(".menu-item > a").click();
   }
 }
 
-// HELPERS
-// const makeClassName = (str) => str.toLowerCase().split(" ").join("-");
-
-/**
- * Build the main component
- * @param {string} name - The name of the component
- */
-
-// PAGES
-// const menuItems = [
-//   "Main Info",
-//   "Add images",
-//   "Tab component",
-//   "Amazon button",
-//   "Form practice",
-//   "Fake AI Prompt",
-// ];
-
+/* ------------------------ */
 // PAGE: Main info
 const mainInfo = new Page("Main Info");
 mainInfo.innerText = `This is going to be some practice javascript to get ready for my little test thingy`;
 
+/* ------------------------ */
 // PAGE: add images
 const addImages = new Page("Add the Images");
 const addImagesButton = document.createElement("button");
@@ -136,145 +116,144 @@ const getImage = async () => {
 };
 addImagesButton.addEventListener("click", getImage);
 
-// // PAGE: Tab component
-// const tabComponent = new Page("Tab Component");
+/* ------------------------ */
+// PAGE: Tab component
+const tabComponent = new Page("Tab Component");
 
-// const tcData = [
-//   {
-//     title: "Card 1",
-//     question: "What is the capital of the US?",
-//     answer: "Washington, DC",
-//   },
-//   {
-//     title: "Card 2",
-//     question: "What is the capital of CR?",
-//     answer: "San Jose",
-//   },
-//   {
-//     title: "Card 3",
-//     question: "lorem???",
-//     answer: "ipsum",
-//   },
-// ];
+const tcData = [
+  {
+    title: "Card 1",
+    question: "What is the capital of the US?",
+    answer: "Washington, DC",
+  },
+  {
+    title: "Card 2",
+    question: "What is the capital of CR?",
+    answer: "San Jose",
+  },
+  {
+    title: "Card 3",
+    question: "lorem???",
+    answer: "ipsum",
+  },
+];
 
-// let tcDataIndex = 0;
-// let isQuestionEnabled = true;
+let tcDataIndex = 0;
+let isQuestionEnabled = true;
 
-// const tabComponentList = document.createElement("ul");
-// tabComponentList.className = "tc-list";
+const tabComponentList = document.createElement("ul");
+tabComponentList.className = "tc-list";
 
-// const tabComponentBody = document.createElement("div");
-// tabComponentBody.className = "tc-body";
+const tabComponentBody = document.createElement("div");
+tabComponentBody.className = "tc-body";
 
-// const extraStuff = document.createElement("p");
+const extraStuff = document.createElement("p");
 
-// tcData.forEach((compItem, idx) => {
-//   const listItem = document.createElement("li");
-//   listItem.innerText = compItem.title;
-//   tabComponentList.appendChild(listItem);
+tcData.forEach((compItem, idx) => {
+  const listItem = document.createElement("li");
+  listItem.innerText = compItem.title;
+  tabComponentList.appendChild(listItem);
 
-//   if (idx === 0) {
-//     listItem.classList.add("selected");
-//   }
+  if (idx === 0) {
+    listItem.classList.add("selected");
+  }
 
-//   listItem.addEventListener("click", () => {
-//     document.querySelectorAll(".tc-list > li").forEach((item) => {
-//       item.classList.remove("selected");
-//     });
+  listItem.addEventListener("click", () => {
+    document.querySelectorAll(".tc-list > li").forEach((item) => {
+      item.classList.remove("selected");
+    });
 
-//     listItem.classList.add("selected");
-//     tcDataIndex = idx;
+    listItem.classList.add("selected");
+    tcDataIndex = idx;
 
-//     tabComponentBody.innerText = tcData[idx].question;
-//   });
-// });
+    tabComponentBody.innerText = tcData[idx].question;
+  });
+});
 
-// tabComponentBody.addEventListener("click", () => {
-//   isQuestionEnabled = !isQuestionEnabled;
-//   const isQuestion = isQuestionEnabled ? "question" : "answer";
-//   tabComponentBody.innerText = tcData[tcDataIndex][isQuestion];
-// });
+tabComponentBody.addEventListener("click", () => {
+  isQuestionEnabled = !isQuestionEnabled;
+  const isQuestion = isQuestionEnabled ? "question" : "answer";
+  tabComponentBody.innerText = tcData[tcDataIndex][isQuestion];
+});
 
-// tabComponentBody.innerText = tcData[tcDataIndex].question;
-// addItemsTo(tabComponent[0])(tabComponentList, tabComponentBody);
+tabComponentBody.innerText = tcData[tcDataIndex].question;
+addItemsTo(tabComponent)(tabComponentList, tabComponentBody);
 
-// /* ------------------------ */
+/* ------------------------ */
+// PAGE: Amazon button question
+const amazonButtonQuesh = new Page("Amazon button");
 
-// // PAGE: Amazon button question
-// const amazonButtonQuesh = new Page("Amazon button");
+const amButtonArr = [];
 
-// const amButtonArr = [];
+const initAmazonTest = () => {
+  amButtonArr.push(0);
+  amButtonArr.forEach((item, idx) => {
+    const btn = document.createElement("button");
+    btn.innerText = `Count ${item}`;
+    amazonButtonQuesh.appendChild(btn);
 
-// const initAmazonTest = () => {
-//   amButtonArr.push(0);
-//   amButtonArr.forEach((item, idx) => {
-//     const btn = document.createElement("button");
-//     btn.innerText = `Count ${item}`;
-//     amazonButtonQuesh[0].appendChild(btn);
+    btn.addEventListener("click", () => {
+      amazonButtonQuesh.innerHTML = "";
+      amButtonArr[idx] = item + 1;
+      initAmazonTest();
+    });
+  });
+};
 
-//     btn.addEventListener("click", () => {
-//       amazonButtonQuesh.innerHTML = "";
-//       amButtonArr[idx] = item + 1;
-//       initAmazonTest();
-//     });
-//   });
-// };
+initAmazonTest();
 
-// initAmazonTest();
-
+/* --------------------------- */
 // // PAGE: Form stuff
+const formPractice = new Page("Form Practice");
 
-// const formPractice = new Page("Form Practice");
+let todos = [];
+const addButton = document.createElement("button");
+const formInput = document.createElement("input");
+formInput.type = "text";
+formInput.placeholder = "Add to todo";
+formInput.width = 200;
+const formBody = document.createElement("ul");
+formBody.className = "form-body-ul";
+const formHeader = document.createElement("div");
+formHeader.className = "form-header";
+addButton.textContent = "Add";
 
-// let todos = [];
-// const addButton = document.createElement("button");
-// const formInput = document.createElement("input");
-// formInput.type = "text";
-// formInput.placeholder = "Add to todo";
-// formInput.width = 200;
-// const formBody = document.createElement("ul");
-// formBody.className = "form-body-ul";
-// const formHeader = document.createElement("div");
-// formHeader.className = "form-header";
-// addButton.textContent = "Add";
+addItemsTo(formHeader)(formInput, addButton);
+addItemsTo(formPractice)(formHeader, formBody);
 
-// addItemsTo(formHeader)(formInput, addButton);
-// addItemsTo(formPractice[0])(formHeader, formBody);
+const buildTodos = () => {
+  formBody.innerHTML = "";
+  todos.forEach((item, idx) => {
+    const pTextItem = document.createElement("span");
+    pTextItem.textContent = `${item}`;
+    const removeButton = document.createElement("button");
+    removeButton.textContent = "x";
+    removeButton.className = "form-remove-button";
+    const row = document.createElement("li");
+    row.className = "form-row-li";
 
-// const buildTodos = () => {
-//   formBody.innerHTML = "";
-//   todos.forEach((item, idx) => {
-//     const pTextItem = document.createElement("span");
-//     pTextItem.textContent = `${item}`;
-//     const removeButton = document.createElement("button");
-//     removeButton.textContent = "x";
-//     removeButton.className = "form-remove-button";
-//     const row = document.createElement("li");
-//     row.className = "form-row-li";
+    removeButton.addEventListener("click", () => {
+      todos = todos.filter((item, i) => {
+        return i !== idx && item;
+      });
+      buildTodos();
+    });
 
-//     removeButton.addEventListener("click", () => {
-//       todos = todos.filter((item, i) => {
-//         return i !== idx && item;
-//       });
-//       buildTodos();
-//     });
+    addItemsTo(row)(pTextItem, removeButton);
+    formBody.appendChild(row);
+  });
+};
 
-//     addItemsTo(row)(pTextItem, removeButton);
-//     formBody.appendChild(row);
-//   });
-// };
+addButton.addEventListener("click", () => {
+  if (formInput.value.length) todos.push(formInput.value);
 
-// addButton.addEventListener("click", () => {
-//   if (formInput.value.length) todos.push(formInput.value);
+  formInput.value = "";
+  buildTodos();
+});
 
-//   formInput.value = "";
-//   buildTodos();
-// });
-
-// // PAGE: Fake AI Prompt
-// const fakeAIPromp = new Page("Fake AI Prompt");
-// fakeAIPromp[0].innerText = "Im a fake ai prompt";
-
-// /* --------------------------- */
+/* --------------------------- */
+// PAGE: Fake AI Prompt
+const fakeAIPromp = new Page("Fake AI Prompt");
+fakeAIPromp.innerText = "Im a fake ai prompt";
 
 Page.render();
