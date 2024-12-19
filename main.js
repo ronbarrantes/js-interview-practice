@@ -32,12 +32,6 @@ class Page {
     return Page.pages;
   }
 
-  static _createHeader() {}
-
-  static _createNav() {}
-
-  static _createMainBody() {}
-
   static render() {
     const root = document.createElement("div");
     // MAIN SETUP
@@ -77,6 +71,8 @@ class Page {
 
     addItemsTo(root)(header, menu, mainBody);
     document.body.appendChild(root);
+
+    // This clicks on the first item making the first page appear on screen
     document.querySelector(".menu-item > a").click();
   }
 }
@@ -182,7 +178,6 @@ addItemsTo(tabComponent)(tabComponentList, tabComponentBody);
 /* ------------------------ */
 // PAGE: Amazon button question
 const amazonButtonQuesh = new Page("Amazon button");
-
 const amButtonArr = [];
 
 const initAmazonTest = () => {
@@ -252,8 +247,124 @@ addButton.addEventListener("click", () => {
 });
 
 /* --------------------------- */
-// PAGE: Fake AI Prompt
-const fakeAIPromp = new Page("Fake AI Prompt");
-fakeAIPromp.innerText = "Im a fake ai prompt";
+// PAGE: game of life
+const gameOfLife = new Page("Game of Life");
 
+let boardData = [
+  [1, 1, 0, 0, 1, 0, 1],
+  [0, 1, 1, 0, 1, 0, 1],
+  [1, 0, 1, 0, 0, 1, 1],
+];
+
+let isPaused = false;
+
+gameOfLife.innerText = "Game of life";
+const buildBoard = (boardData) => {
+  const squareSize = "20px";
+  const b = document.createElement("div");
+  boardData.forEach((row) => {
+    const rowEl = document.createElement("div");
+    rowEl.style.display = "flex";
+    addItemsTo(b)(rowEl);
+    row.forEach((cell) => {
+      const cellEl = document.createElement("span");
+      cellEl.style.display = "block";
+      cellEl.style.width = squareSize;
+      cellEl.style.height = squareSize;
+      cellEl.style.background = cell === 1 ? "black" : "white";
+      addItemsTo(rowEl)(cellEl);
+    });
+  });
+
+  return b;
+};
+
+const cellChecker = (board, row, col) => {
+  // check if cell is alive
+  const rowsCount = board.length;
+  const colsCount = board[0].length;
+  let isAlive = board[row][col] === 1;
+  let neighborCount = 0;
+
+  // find the neighbor count
+  for (let rowNb = row - 1; rowNb < row - 1 + 3; rowNb++) {
+    for (let colNb = col - 1; colNb < col - 1 + 3; colNb++) {
+      if (
+        (rowNb === row && colNb === col) ||
+        rowNb < 0 ||
+        colNb < 0 ||
+        rowNb >= rowsCount ||
+        colNb >= colsCount
+      ) {
+        continue;
+      }
+      neighborCount += board[rowNb][colNb];
+    }
+  }
+
+  // RULES
+  // dead cell with 3 neighbors turns alive
+  if (!isAlive && neighborCount === 3) return 1;
+  // 2 or 3 neighbors lives
+  if (isAlive && (neighborCount === 2 || neighborCount === 3)) return 1;
+  // everything else dies
+  return 0;
+};
+
+let counter = 0;
+const nextGenData = (boardData) => {
+  const tempBoard = [];
+
+  for (let row = 0; row < boardData.length; row++) {
+    const tempRows = [];
+
+    for (let col = 0; col < boardData[0].length; col++) {
+      const newCell = cellChecker(boardData, row, col);
+      tempRows.push(newCell);
+    }
+    tempBoard.push(tempRows);
+  }
+
+  return tempBoard;
+};
+
+let board = buildBoard(boardData);
+const pauseButton = document.createElement("button");
+
+pauseButton.textContent = isPaused ? "start" : "stop";
+
+pauseButton.addEventListener("click", () => {
+  isPaused = !isPaused;
+
+  pauseButton.textContent = isPaused ? "start" : "stop";
+
+  const interval = setInterval(() => {
+    if (!isPaused) {
+      clearInterval(interval);
+    } else {
+      const tempData = nextGenData(boardData);
+
+      console.log("tempBoard", tempData);
+
+      boardData = tempData;
+
+      board = buildBoard(boardData);
+      console.log(boardData);
+      counter++;
+    }
+  }, 1000);
+});
+
+addItemsTo(gameOfLife)(pauseButton, board);
+/* --------------------------- */
+// // PAGE: Fake AI Prompt
+// const fakeAIPromp = new Page("Fake AI Prompt");
+// fakeAIPromp.innerText = "Im a fake ai prompt";
+
+/* --------------------------- */
+/// RENDER THE PAGE ////
 Page.render();
+
+const liItem =
+  document.getElementsByClassName("menu-item")[Page.children.length - 1];
+liItem.children[0].click();
