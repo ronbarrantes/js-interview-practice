@@ -248,17 +248,11 @@ addButton.addEventListener("click", () => {
 
 /* --------------------------- */
 // PAGE: game of life
+
 const gameOfLife = new Page("Game of Life");
-
-let boardData = [
-  [1, 1, 0, 0, 1, 0, 1],
-  [0, 1, 1, 0, 1, 0, 1],
-  [1, 0, 1, 0, 0, 1, 1],
-];
-
-let isPaused = false;
-
 gameOfLife.innerText = "Game of life";
+
+// HELPERS
 const buildBoard = (boardData) => {
   const squareSize = "20px";
   const b = document.createElement("div");
@@ -311,6 +305,23 @@ const cellChecker = (board, row, col) => {
   return 0;
 };
 
+let boardData = [
+  [1, 1, 0, 0, 1, 0, 1],
+  [0, 1, 1, 0, 1, 0, 1],
+  [1, 0, 1, 0, 0, 1, 1],
+];
+
+let isPaused = false;
+
+const board = document.createElement("div");
+
+board.append(buildBoard(boardData));
+
+board.className = "game-of-life-board";
+
+const pauseButton = document.createElement("button");
+addItemsTo(gameOfLife)(pauseButton, board);
+
 let counter = 0;
 const nextGenData = (boardData) => {
   const tempBoard = [];
@@ -328,9 +339,6 @@ const nextGenData = (boardData) => {
   return tempBoard;
 };
 
-let board = buildBoard(boardData);
-const pauseButton = document.createElement("button");
-
 pauseButton.textContent = isPaused ? "start" : "stop";
 
 pauseButton.addEventListener("click", () => {
@@ -338,24 +346,28 @@ pauseButton.addEventListener("click", () => {
 
   pauseButton.textContent = isPaused ? "start" : "stop";
 
-  const interval = setInterval(() => {
-    if (!isPaused) {
-      clearInterval(interval);
-    } else {
-      const tempData = nextGenData(boardData);
+  board.innerHTML = buildBoard(boardData);
+  //   const interval = setInterval(() => {
+  //     if (!isPaused) {
+  //       clearInterval(interval);
+  //     } else {
+  //       const tempData = nextGenData(boardData);
 
-      console.log("tempBoard", tempData);
+  //       console.log("tempBoard", tempData);
 
-      boardData = tempData;
+  //       boardData = tempData;
 
-      board = buildBoard(boardData);
-      console.log(boardData);
-      counter++;
-    }
-  }, 1000);
+  //       const innerBoard = buildBoard(boardData);
+
+  //       board.innerHTML(innerBoard);
+  //       console.log(boardData);
+  //       counter++;
+  //     }
+  //   }, 1000);
+
+  console.log("DONE");
 });
 
-addItemsTo(gameOfLife)(pauseButton, board);
 /* --------------------------- */
 // // PAGE: Fake AI Prompt
 // const fakeAIPromp = new Page("Fake AI Prompt");
