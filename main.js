@@ -353,8 +353,8 @@ golChangeButton.addEventListener("click", () => {
   const rowInput = +golRowInput.value;
   const colInput = +golColInput.value;
 
-  if (rowInput > 40 || colInput > 40) {
-    alert("Please keep the inputs below 40");
+  if (rowInput > 100 || colInput > 100) {
+    alert("Please keep the inputs below 100");
     return;
   }
 
@@ -399,7 +399,7 @@ golPauseButton.addEventListener("click", () => {
       addItemsTo(board)(...buildBoard(boardData));
       counter++;
     }
-  }, 500);
+  }, 100);
 
   console.log("DONE");
 });
