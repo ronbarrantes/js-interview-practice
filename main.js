@@ -250,16 +250,35 @@ addButton.addEventListener("click", () => {
 // PAGE: game of life
 
 const gameOfLife = new Page("Game of Life");
-gameOfLife.innerText = "Game of life";
+// gameOfLife.innerText = "Game of life";
 
 // HELPERS
+const golRandomNumber = () => {
+  return Math.floor(Math.random() * 2);
+};
+
+const initData = (rows, cols) => {
+  const tempBoard = [];
+
+  for (let row = 0; row < rows; row++) {
+    const tempRows = [];
+
+    for (let col = 0; col < cols; col++) {
+      const newCell = golRandomNumber();
+      tempRows.push(newCell);
+    }
+    tempBoard.push(tempRows);
+  }
+
+  return tempBoard;
+};
+
 const buildBoard = (boardData) => {
-  const squareSize = "20px";
-  const b = document.createElement("div");
+  const squareSize = "10px";
+  const spans = [];
   boardData.forEach((row) => {
     const rowEl = document.createElement("div");
     rowEl.style.display = "flex";
-    addItemsTo(b)(rowEl);
     row.forEach((cell) => {
       const cellEl = document.createElement("span");
       cellEl.style.display = "block";
@@ -268,9 +287,11 @@ const buildBoard = (boardData) => {
       cellEl.style.background = cell === 1 ? "black" : "white";
       addItemsTo(rowEl)(cellEl);
     });
+
+    spans.push(rowEl);
   });
 
-  return b;
+  return spans;
 };
 
 const cellChecker = (board, row, col) => {
@@ -305,22 +326,45 @@ const cellChecker = (board, row, col) => {
   return 0;
 };
 
-let boardData = [
-  [1, 1, 0, 0, 1, 0, 1],
-  [0, 1, 1, 0, 1, 0, 1],
-  [1, 0, 1, 0, 0, 1, 1],
-];
+let boardData = initData(10, 10);
 
 let isPaused = false;
 
 const board = document.createElement("div");
 
-board.append(buildBoard(boardData));
+addItemsTo(board)(...buildBoard(boardData));
 
 board.className = "game-of-life-board";
+const golPauseButton = document.createElement("button");
+const golChangeButton = document.createElement("button");
+const golRowInput = document.createElement("input");
+const golColInput = document.createElement("input");
 
-const pauseButton = document.createElement("button");
-addItemsTo(gameOfLife)(pauseButton, board);
+golRowInput.type = "text";
+golRowInput.placeholder = "Rows...";
+golRowInput.value = 10;
+golColInput.type = "text";
+golColInput.placeholder = "Columns...";
+golChangeButton.textContent = "change";
+golColInput.value = 10;
+
+const golForm = document.createElement("form");
+golChangeButton.addEventListener("click", () => {
+  const rowInput = +golRowInput.value;
+  const colInput = +golColInput.value;
+
+  if (rowInput > 40 || colInput > 40) {
+    alert("Please keep the inputs below 40");
+    return;
+  }
+
+  boardData = initData(rowInput, colInput);
+  board.innerHTML = "";
+  addItemsTo(board)(...buildBoard(boardData));
+});
+
+addItemsTo(golForm)(golRowInput, golColInput, golChangeButton, golPauseButton);
+addItemsTo(gameOfLife)(golForm, board);
 
 let counter = 0;
 const nextGenData = (boardData) => {
@@ -339,31 +383,23 @@ const nextGenData = (boardData) => {
   return tempBoard;
 };
 
-pauseButton.textContent = isPaused ? "start" : "stop";
+golPauseButton.textContent = isPaused ? "stop" : "start";
 
-pauseButton.addEventListener("click", () => {
+golPauseButton.addEventListener("click", () => {
   isPaused = !isPaused;
+  golPauseButton.textContent = isPaused ? "stop" : "start";
 
-  pauseButton.textContent = isPaused ? "start" : "stop";
-
-  board.innerHTML = buildBoard(boardData);
-  //   const interval = setInterval(() => {
-  //     if (!isPaused) {
-  //       clearInterval(interval);
-  //     } else {
-  //       const tempData = nextGenData(boardData);
-
-  //       console.log("tempBoard", tempData);
-
-  //       boardData = tempData;
-
-  //       const innerBoard = buildBoard(boardData);
-
-  //       board.innerHTML(innerBoard);
-  //       console.log(boardData);
-  //       counter++;
-  //     }
-  //   }, 1000);
+  const interval = setInterval(() => {
+    if (!isPaused) {
+      clearInterval(interval);
+    } else {
+      const tempData = nextGenData(boardData);
+      boardData = tempData;
+      board.innerHTML = "";
+      addItemsTo(board)(...buildBoard(boardData));
+      counter++;
+    }
+  }, 500);
 
   console.log("DONE");
 });
