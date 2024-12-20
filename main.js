@@ -339,6 +339,9 @@ const golPauseButton = document.createElement("button");
 const golChangeButton = document.createElement("button");
 const golRowInput = document.createElement("input");
 const golColInput = document.createElement("input");
+const counterTracker = document.createElement("p");
+let counter = 0;
+counterTracker.innerText = `Generation 0`;
 
 golRowInput.type = "text";
 golRowInput.placeholder = "Rows...";
@@ -360,16 +363,16 @@ golChangeButton.addEventListener("click", () => {
 
   boardData = initData(rowInput, colInput);
   board.innerHTML = "";
+  counter = 0;
+  counterTracker.innerText = `Generation ${counter}`;
   addItemsTo(board)(...buildBoard(boardData));
 });
 
 addItemsTo(golForm)(golRowInput, golColInput, golChangeButton, golPauseButton);
-addItemsTo(gameOfLife)(golForm, board);
+addItemsTo(gameOfLife)(golForm, counterTracker, board);
 
-let counter = 0;
 const nextGenData = (boardData) => {
   const tempBoard = [];
-
   for (let row = 0; row < boardData.length; row++) {
     const tempRows = [];
 
@@ -397,6 +400,7 @@ golPauseButton.addEventListener("click", () => {
       boardData = tempData;
       board.innerHTML = "";
       addItemsTo(board)(...buildBoard(boardData));
+      counterTracker.innerText = `Generation ${counter}`;
       counter++;
     }
   }, 100);
