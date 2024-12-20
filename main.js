@@ -274,7 +274,7 @@ const initData = (rows, cols) => {
 };
 
 const buildBoard = (boardData) => {
-  const squareSize = "10px";
+  const squareSize = "5px";
   const spans = [];
   boardData.forEach((row) => {
     const rowEl = document.createElement("div");
@@ -356,8 +356,11 @@ golChangeButton.addEventListener("click", () => {
   const rowInput = +golRowInput.value;
   const colInput = +golColInput.value;
 
-  if (rowInput > 100 || colInput > 100) {
-    alert("Please keep the inputs below 100");
+  const min = 1;
+  const max = 200;
+
+  if (rowInput < min || colInput < min || rowInput > max || colInput > max) {
+    alert(`Please keep the between ${min} and ${max}`);
     return;
   }
 
@@ -403,7 +406,7 @@ golPauseButton.addEventListener("click", () => {
       counterTracker.innerText = `Generation ${counter}`;
       counter++;
     }
-  }, 100);
+  }, 50);
 
   console.log("DONE");
 });
